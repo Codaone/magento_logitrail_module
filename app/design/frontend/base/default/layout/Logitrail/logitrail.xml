@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<layout>
+    <checkout_onepage_index>
+        <reference name="head">
+           <block type="core/text" name="external_js">
+                <action method="setText">
+                    <text><![CDATA[<script type="https://rawgit.com/logitrail/javascript-library/master/src/logitrail.js"></script>]]></text>
+                     </action>
+            </block>
+        </reference>
+    </checkout_onepage_index>
+</layout>
+
+

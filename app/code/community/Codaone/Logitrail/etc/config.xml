@@ -17,7 +17,16 @@
 		<resourceModel>logitrail_mysql4</resourceModel>
 	  </logitrail>
 	</models>
-  </global>    
+  </global>   
+   <frontend>
+        <layout>
+            <updates>
+                <logitrail>
+                    <file>Logitrail/logitrail.xml</file>
+                </logitrail>
+            </updates>
+        </layout> 
+    </frontend>
 	<default>
         <carriers>
             <logitrail>

@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<config>
+  <modules>
+    <Codaone_Logitrail>
+      <version>0.1.0</version>
+    </Codaone_Logitrail>
+  </modules>
+  <global>
+    <helpers>
+      <logitrail>
+        <class>Codaone_Logitrail_Helper</class>
+      </logitrail>
+    </helpers>
+	<models>
+	  <logitrail>
+		<class>Codaone_Logitrail_Model</class>
+		<resourceModel>logitrail_mysql4</resourceModel>
+	  </logitrail>
+	</models>
+  </global>    
+	<default>
+        <carriers>
+            <logitrail>
+                <active>1</active>
+                <model>logitrail/carrier_logitrail</model>
+                <name>Logitrail</name>
+                <title>Logitrail</title>
+                <description>Logitrail</description>
+                <sort_order>0</sort_order>
+            </logitrail>
+        </carriers>
+    </default>
+</config> 

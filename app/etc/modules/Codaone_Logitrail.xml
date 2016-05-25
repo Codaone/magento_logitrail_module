@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<config>
+  <modules>
+    <Codaone_Logitrail>
+      <active>true</active>
+      <codePool>community</codePool>            
+	        <depends>
+                <Mage_Shipping />
+            </depends>
+      <version>0.1.0</version>
+    </Codaone_Logitrail>
+  </modules>
+</config>

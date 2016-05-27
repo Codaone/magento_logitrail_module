@@ -1,0 +1,42 @@
+<div id="logitrailFormContainer">
+<div id="logitrailHolder">
+</div>
+ <script type="text/javascript">
+    var selectionDone = false;
+    if(jQuery('input[type=radio][name=shipping_method]').val() == 'logitrail_logitrail') {
+        jQuery("#shipping-method-buttons-container").find(".button").prop("disabled", true);
+        jQuery("#logitrailHolder").show();
+     } else {
+        jQuery("#shipping-method-buttons-container").find(".button").prop("disabled", false);
+        jQuery("#logitrailHolder").hide();
+    }
+    jQuery('input[type=radio][name=shipping_method]').change(function() {
+        if (this.value == 'logitrail_logitrail') {
+          jQuery("#logitrailHolder").show();
+          if(selectionDone == false) {
+             jQuery("#shipping-method-buttons-container").find(".button").prop("disabled", true); 
+          }
+        } else {
+          jQuery("#shipping-method-buttons-container").find(".button").prop("disabled", false); 
+          jQuery("#logitrailHolder").hide();
+        }
+    });
+
+
+ Logitrail.checkout({
+    containerId: 'logitrailHolder',  
+    <?php echo $this->isTestMode()?'host: "http://checkout.test.logitrail.com",':''; ?>      
+    bridgeUrl: '<?php echo $this->getUrl('logitrail/ajax/form'); ?>',
+    success: function(logitrailResponse) {
+     var price = Number(logitrailResponse.delivery_fee);
+    jQuery("#s_method_logitrail_logitrail_price").html('<span class="price">' + price.toFixed(2) + '<?php echo ' ' . Mage::app()->getLocale()->currency(Mage::app()->getStore()->getCurrentCurrencyCode())->getSymbol(); ?>' + '</span>');
+    jQuery.get('<?php echo $this->getUrl('logitrail/ajax/success');?>' + 'order_id/' + logitrailResponse.order_id + '/delivery_fee/' + price);
+    jQuery("#shipping-method-buttons-container").find(".button").prop("disabled", false); 
+    selectionDone = true;
+    },
+    error: function(error) {
+        alert('<?php echo $this->__('Error occured in Logitrail shipping selection'); ?>');
+    }
+});
+</script>
+</div>

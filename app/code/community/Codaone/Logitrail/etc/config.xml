@@ -17,8 +17,22 @@
 		<resourceModel>logitrail_mysql4</resourceModel>
 	  </logitrail>
 	</models>
-  </global>   
+        <blocks>
+            <logitrail> 
+                <class>Codaone_Logitrail_Block</class>
+            </logitrail>
+        </blocks>
+    </global>
    <frontend>
+     <routers>
+      <logitrail>
+        <use>standard</use>
+        <args>
+          <module>Codaone_Logitrail</module>
+          <frontName>logitrail</frontName>
+        </args>
+      </logitrail>
+    </routers>
         <layout>
             <updates>
                 <logitrail>

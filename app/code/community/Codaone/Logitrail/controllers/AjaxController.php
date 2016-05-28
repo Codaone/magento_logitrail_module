@@ -17,17 +17,17 @@ class Codaone_Logitrail_AjaxController extends Mage_Core_Controller_Front_Action
      *
      */
     public function successAction() {
-       Mage::log('successAction',null,'tero.log');
        Mage::getModel('logitrail/carrier_logitrail')->shippingDetails(
-        preg_replace('/[^A-Za-z0-9\-]/', '', $this->getRequest()->getParam('order_id')),
-        (float)$this->getRequest()->getParam('delivery_fee'));
+           preg_replace('/[^A-Za-z0-9\-]/', '', $this->getRequest()->getParam('order_id')),
+           (float)$this->getRequest()->getParam('delivery_fee'));
     }
 
     /*  
-     * Handle failure callback from Logitrail
+     * Handle fail callback from Logitrail
      *
      */
-    public function failureAction() {
+    public function failAction() {
+        // placeholder, never called, failure handled at js
     }
 }
 

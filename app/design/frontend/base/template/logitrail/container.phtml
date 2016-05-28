@@ -3,6 +3,9 @@
 </div>
  <script type="text/javascript">
     var selectionDone = false;
+<?php 
+/* The Continue button may not be enabled if Logitrail is chosen, but the
+   delivery method inside Logitrail is not yet selected */  ?>
     if(jQuery('input[type=radio][name=shipping_method]').val() == 'logitrail_logitrail') {
         jQuery("#shipping-method-buttons-container").find(".button").prop("disabled", true);
         jQuery("#logitrailHolder").show();
@@ -35,7 +38,7 @@
     selectionDone = true;
     },
     error: function(error) {
-        alert('<?php echo $this->__('Error occured in Logitrail shipping selection'); ?>');
+        alert('<?php echo $this->__('Error occured in Logitrail shipping selection.'); ?>');
     }
 });
 </script>

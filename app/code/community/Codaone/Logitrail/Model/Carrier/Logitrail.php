@@ -23,6 +23,7 @@
             $quote = Mage::getSingleton('checkout/session')->getQuote();
             $items = $quote->getAllVisibleItems();
             $api = new \Logitrail\Lib\ApiClient();
+            $api->useTest($this->isTestMode());
             $api->setMerchantId($this->getConfig('merchantid'));
             $api->setSecretKey($this->getConfig('secretkey'));
             $api->setOrderId($quote->getId());
@@ -34,45 +35,46 @@
                                 $item->getPrice(),
                                 $item->getTaxPercent());
             }
-            $api->setCustomerInfo('etunimi', 'sukunimi','osoite','33800','tampere'); // TO DO
+            $address = $quote->getShippingAddress();
+            $api->setCustomerInfo($address->getFirstname(),
+                                  $address->getLastname(),
+                                  $address->getStreet(),
+                                  $address->getPostcode(),
+                                  $address->getCity());
             $form = $api->getForm();
-Mage::log($form, null, 'tero.log');
+            if ($this->isTestMode()) { 
+                Mage::log("Order form for Logitrail: $form", null, 'logitrail.log');
+            }
             return $form;
         }                   
         /**
-        * Get form for the checkout block
+        * Update shipping details with logittail order id and shipping fee
         *
         * @return string 
         */
         public function shippingDetails($logitrailId, $price) {
-
-Mage::log("shipping details $logitrailId, $price",null, 'tero.log');
-
-        Mage::getSingleton('core/session')->setLogirailShippingCost($price);
-        $quote = Mage::getSingleton('checkout/session')->getQuote();
-        $address = $quote->getShippingAddress();
-        $address->setShippingAmount($price);
-        $address->setBaseShippingAmount($price);
-        $address->save();
-        // Find if our shipping has been included.
-        $rates = $address->collectShippingRates()
-                 ->getGroupedAllShippingRates();
-
-        foreach ($rates as $carrier) {
-            foreach ($carrier as $rate) {
-                $rate->setPrice($price);
-                $rate->save();            
+             if ($this->isTestMode()) { 
+                    Mage::log("Shipping details: Logitrail Order Id: $logitrailId, Shipping fee: $price", null, 'logitrail.log');
             }
-        }
-        $address->setCollectShippingRates(true);    
-return;
-            $quote = Mage::getSingleton('checkout/session')->getQuote()->setTotalsCollectedFlag(false)->collectTotals();
-return;
-            $quote->setShippingAmount($price);
-            $quote->setShippingBaseAmount($price);
-            $quote->save();
-            $quote->collectTotals();
-Mage::log(print_r($quote->getData(), true),null, 'tero.log');
+            Mage::getSingleton('core/session')->setLogitrailShippingCost($price);
+            $quote = Mage::getSingleton('checkout/session')->getQuote();
+            $address = $quote->getShippingAddress();
+            $address->setShippingAmount($price);
+            $address->setBaseShippingAmount($price);
+            $address->save();
+            // Find if our shipping has been included.
+            $rates = $address->collectShippingRates()
+                     ->getGroupedAllShippingRates();
+    
+            foreach ($rates as $carrier) {
+                foreach ($carrier as $rate) {
+                    $rate->setPrice($price);
+                    $rate->save();            
+                }
+            }
+            $address->setCollectShippingRates(true);    
+
+           $quote->setData('logitrail_order_id', $logitrailId)->save();
         }
 
         /** 
@@ -89,8 +91,8 @@ Mage::log(print_r($quote->getData(), true),null, 'tero.log');
             $method->setCarrierTitle($this->getConfigData('title'));
             $method->setMethod($this->_code);  
             $method->setMethodTitle($this->getConfigData('name'));
-		    $method->setPrice(Mage::getSingleton('core/session')->getLogirailShippingCost());
-		    $method->setCost(Mage::getSingleton('core/session')->getLogirailShippingCost()); 
+		    $method->setPrice(Mage::getSingleton('core/session')->getLogitrailShippingCost());
+		    $method->setCost(Mage::getSingleton('core/session')->getLogitrailShippingCost()); 
             $result->append($method);  
             return $result;  
         }  
@@ -112,7 +114,7 @@ Mage::log(print_r($quote->getData(), true),null, 'tero.log');
         * @return boolean
         */
         public function isTestMode() {
-            return true; // to do, add config parameter
+            return $this->getConfig('testmode') == 1;
         }
 
         protected function getConfig($name) {

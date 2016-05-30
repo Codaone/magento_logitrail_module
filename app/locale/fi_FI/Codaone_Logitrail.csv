@@ -13,3 +13,7 @@
 "Sort Order","Järjestys"
 "Test mode","Testitila"
 "Select yes to enable test mode. Test mode uses Logitrail test server and writes log to logitrail.log","Valitse kyllä käyttääksesi testitilaa. Testitilassa käytetään Logitrailin testipalvelinta ja kirjoitetaan lokia tiedostoon logitrail.log"
+"Tracking URL: ","Seurantatunnus: "
+"Logitrail Order Id: %s, Tracking number: %s, Tracking URL: %s","Logitrail tilaustunnus: %s, seurantanumero: %s, seurannan URL-osoite: %s"
+"Automatic shipment creation","Luo tuomitus automaattisesti"
+"Error: could not confirm order to Logitrail. Logitrail Order Id: ","Virhe: tilauksen vahvistus Logitrailille epäonnistui"

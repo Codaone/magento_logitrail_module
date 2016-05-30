@@ -24,8 +24,8 @@
             $items = $quote->getAllVisibleItems();
             $api = new \Logitrail\Lib\ApiClient();
             $api->useTest($this->isTestMode());
-            $api->setMerchantId($this->getConfig('merchantid'));
-            $api->setSecretKey($this->getConfig('secretkey'));
+            $api->setMerchantId($this->getConfigData('merchantid'));
+            $api->setSecretKey($this->getConfigData('secretkey'));
             $api->setOrderId($quote->getId());
             foreach($items as $item) {
                 $api->addProduct($item->getProductId(),
@@ -38,7 +38,7 @@
             $address = $quote->getShippingAddress();
             $api->setCustomerInfo($address->getFirstname(),
                                   $address->getLastname(),
-                                  $address->getStreet(),
+                                  join(' ', $address->getStreet()),
                                   $address->getPostcode(),
                                   $address->getCity());
             $form = $api->getForm();
@@ -114,11 +114,6 @@
         * @return boolean
         */
         public function isTestMode() {
-            return $this->getConfig('testmode') == 1;
+            return $this->getConfigData('testmode') == 1;
         }
-
-        protected function getConfig($name) {
-            return Mage::getStoreConfig('carriers/logitrail/' . $name);
-        }
-
     }  

@@ -19,13 +19,9 @@
         * @return string 
         */
         public function getForm() {
-            require_once(Mage::getBaseDir('lib') . '/logitrail/lib/Logitrail/Lib/ApiClient.php');
             $quote = Mage::getSingleton('checkout/session')->getQuote();
             $items = $quote->getAllVisibleItems();
-            $api = new \Logitrail\Lib\ApiClient();
-            $api->useTest($this->isTestMode());
-            $api->setMerchantId($this->getConfigData('merchantid'));
-            $api->setSecretKey($this->getConfigData('secretkey'));
+            $api = Mage::getModel('logitrail/logitrail')->getApi();
             $api->setOrderId($quote->getId());
             foreach($items as $item) {
                 $api->addProduct($item->getProductId(),

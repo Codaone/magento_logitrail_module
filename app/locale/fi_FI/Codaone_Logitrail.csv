@@ -17,3 +17,12 @@
 "Logitrail Order Id: %s, Tracking number: %s, Tracking URL: %s","Logitrail tilaustunnus: %s, seurantanumero: %s, seurannan URL-osoite: %s"
 "Automatic shipment creation","Luo tuomitus automaattisesti"
 "Error: could not confirm order to Logitrail. Logitrail Order Id: ","Virhe: tilauksen vahvistus Logitrailille epäonnistui"
+"Products successfully added to Logitrail","Tuotteiden lisäys Logitrailille onnistui"
+"Error: Adding products failed: ","Virhe: tuotteiden lisäys epäonnistui: "
+"Create/update product to Logitrail","Luo/päivitä tuote Logitrailille"
+"Automatic creation or update to Logitrail on product save","Automaattinen tuotteen luonti tai päivitys Logitraille"
+"When product is saved, update Logitrail automatically.","Tuotteen tallennus päivittää muutokset automaattisesti."
+"Create/Update products to Logitrail","Luo/päivitä tuotteet Logitrailille"
+"Error creating/updating products","Virhe tuotteiden luonnissa/päivityksessä"
+"Failed creating/updating product IDs: ","Tuotteiden luonti/päivitys epäonnistui. Tuotenumerot: "
+

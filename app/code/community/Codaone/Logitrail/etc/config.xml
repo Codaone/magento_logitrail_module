@@ -2,7 +2,7 @@
 <config>
   <modules>
     <Codaone_Logitrail>
-      <version>0.1.0.0</version>
+      <version>0.2.0.0</version>
     </Codaone_Logitrail>
   </modules>
   <global>
@@ -17,7 +17,13 @@
 		<resourceModel>logitrail_mysql4</resourceModel>
 	  </logitrail>
 	</models>
-        <blocks>
+	<blocks>
+	   <adminhtml>
+				<rewrite>
+				    <catalog_product_edit>Codaone_Logitrail_Block_Adminhtml_Catalog_Product_Edit</catalog_product_edit>
+                    <catalog_product_grid>Codaone_Logitrail_Block_Adminhtml_Catalog_Product_Grid</catalog_product_grid>
+            	</rewrite>
+			</adminhtml>
             <logitrail> 
                 <class>Codaone_Logitrail_Block</class>
             </logitrail>
@@ -62,6 +68,15 @@
                     </logitrail>
                 </observers>
             </sales_order_place_after>
+            <catalog_product_save_after>
+                <observers>
+                    <logitrail>
+                        <type>singleton</type>
+                        <class>Codaone_Logitrail_Model_Observer</class>
+                        <method>saveProduct</method>
+                    </logitrail>
+                </observers>
+            </catalog_product_save_after>
         </events>
     </global>
    <frontend>
@@ -91,6 +106,17 @@
             </modules>
         </translate>
     </frontend>
+    <admin>
+        <routers>
+            <adminhtml>
+                <args>
+                    <modules>
+                        <logitrail after="Mage_Adminhtml">Codaone_Logitrail_Adminhtml</logitrail>
+                    </modules>
+                </args>
+            </adminhtml>
+        </routers>
+    </admin>
     <adminhtml>
       <translate>
             <modules>
@@ -112,6 +138,7 @@
                 <description>Logitrail</description>
                 <sort_order>0</sort_order>
                 <testmode>0</testmode>
+                <autosaveproduct>1</autosaveproduct>
             </logitrail>
         </carriers>
     </default>

@@ -6,7 +6,13 @@ class Codaone_Logitrail_Model_Logitrail extends Mage_Core_Model_Abstract {
     protected $_api = false;
 
     public function __construct() {
-        require_once(Mage::getBaseDir('lib') . '/logitrail/lib/Logitrail/Lib/ApiClient.php');
+        $libDir = Mage::getBaseDir('lib');
+        if(is_file($libDir . '/logitrail/lib/Logitrail/Lib/ApiClient.php')) {
+            require_once $libDir . '/logitrail/lib/Logitrail/Lib/ApiClient.php';
+        } else {
+            Mage::throwException('Logitrail library files missing');
+            return;
+        }
         $api = new \Logitrail\Lib\ApiClient();
         $api->setMerchantId($this->_getConfig('merchantid'));
         $api->setSecretKey($this->_getConfig('secretkey'));
@@ -98,7 +104,7 @@ class Codaone_Logitrail_Model_Logitrail extends Mage_Core_Model_Abstract {
                              $product->getStockItem()->getQty(),
                              $product->getWeight() * 1000, // in grams
                              $product->getPrice(),
-                             $percent,
+                             $taxPercent,
                              $product->getBarcode(), 
                              $product->getWidth(), // width
                              $product->getHeight(), // height

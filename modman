@@ -10,3 +10,5 @@ app/locale/en_US/Codaone_Logitrail.csv            app/locale/en_US/Codaone_Logit
 app/design/frontend/base/default/layout/Logitrail/logitrail.xml            app/design/frontend/base/default/layout/Logitrail/logitrail.xml
 app/design/frontend/base/default/template/logitrail/checkout/onepage/shipping_method/available.phtml            app/design/frontend/base/default/template/logitrail/checkout/onepage/shipping_method/available.phtml
 app/design/frontend/base/default/template/logitrail/container.phtml            app/design/frontend/base/default/template/logitrail/container.phtml
+# skin
+skin/frontend/base/default/logitrail/images/loading.gif            skin/frontend/base/default/logitrail/images/loading.gif

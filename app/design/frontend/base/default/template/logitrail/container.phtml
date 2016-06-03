@@ -1,6 +1,6 @@
 <div id="logitrailFormContainer">
-<div id="logitrailHolder">
-</div>
+<img src="<?php echo $this->getSkinUrl('logitrail/images/loading.gif');?>" style="width: 32px;height: auto;display: block;margin: 0 auto;" id="logitrailLoader" />
+<div id="logitrailHolder"></div>
  <script type="text/javascript">
     var selectionDone = false;
 <?php 
@@ -41,5 +41,8 @@
         alert('<?php echo $this->__('Error occured in Logitrail shipping selection.'); ?>');
     }
 });
-</script>
+Logitrail.currentCheckout.frame.onload = function(){
+    jQuery('#logitrailLoader').hide();
+};
+ </script>
 </div>

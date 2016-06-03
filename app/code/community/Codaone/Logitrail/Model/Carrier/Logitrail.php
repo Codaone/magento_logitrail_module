@@ -21,6 +21,7 @@
         public function getForm() {
             $quote = Mage::getSingleton('checkout/session')->getQuote();
             $items = $quote->getAllVisibleItems();
+            /** @var \Logitrail\Lib\ApiClient $api */
             $api = Mage::getModel('logitrail/logitrail')->getApi();
             $api->setOrderId($quote->getId());
             foreach($items as $item) {
@@ -32,8 +33,12 @@
                                 $item->getTaxPercent());
             }
             $address = $quote->getShippingAddress();
+            $email = $address->getEmail() ? : $quote->getCustomerEmail();
+            // firstname, lastname, phone, email, address, postalCode, city
             $api->setCustomerInfo($address->getFirstname(),
                                   $address->getLastname(),
+                                  $address->getTelephone(),
+                                  $email,
                                   join(' ', $address->getStreet()),
                                   $address->getPostcode(),
                                   $address->getCity());

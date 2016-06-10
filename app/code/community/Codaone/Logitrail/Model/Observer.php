@@ -8,7 +8,7 @@ class Codaone_Logitrail_Model_Observer  extends Varien_Event_Observer {
      *
      */
      public function confirmOrder($observer) {
-         Mage::getModel('logitrail/logitrail')->confirmOrder($observer->getEvent()->getOrder());
+         Mage::getModel('logitrail/logitrail')->confirmOrder($observer->getPayment()->getOrder());
     }
     
     public function saveProduct($observer) {

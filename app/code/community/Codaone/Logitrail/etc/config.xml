@@ -59,7 +59,7 @@
             </sales_convert_order>
         </fieldsets>
        <events>
-            <sales_order_place_after>
+            <sales_order_payment_pay>
                 <observers>
                     <logitrail>
                         <type>singleton</type>
@@ -67,7 +67,7 @@
                         <method>confirmOrder</method>
                     </logitrail>
                 </observers>
-            </sales_order_place_after>
+            </sales_order_payment_pay>
             <catalog_product_save_after>
                 <observers>
                     <logitrail>

@@ -35,6 +35,22 @@ class Codaone_Logitrail_Model_Logitrail extends Mage_Core_Model_Abstract {
             $api = $this->getApi();
             $api->setResponseAsRaw(TRUE);
             $logitrailId = $order->getLogitrailOrderId();
+
+            $address = $order->getShippingAddress();
+            $email = $address->getEmail() ? : $order->getCustomerEmail();
+            // Update customerinfo to make sure they are correct
+            // firstname, lastname, phone, email, address, postalCode, city
+            $api->setCustomerInfo(
+                $address->getFirstname(),
+                $address->getLastname(),
+                $address->getTelephone(),
+                $email,
+                join(' ', $address->getStreet()),
+                $address->getPostcode(),
+                $address->getCity()
+            );
+            $api->updateOrder($logitrailId);
+
             $rawResponse = $api->confirmOrder($logitrailId);
             $response    = json_decode($rawResponse, TRUE);
             if ($response) {

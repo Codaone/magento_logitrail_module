@@ -31,4 +31,12 @@ class Codaone_Logitrail_Adminhtml_LogitrailbackendController extends Mage_Adminh
         ->getUrl("adminhtml/catalog_product/"));
     }
 
+    /**
+     * Check is allowed access to action
+     *
+     * @return bool
+     */
+    protected function _isAllowed(){
+         return Mage::getSingleton('admin/session')->isAllowed('logitrailbackend');
+    }
 }

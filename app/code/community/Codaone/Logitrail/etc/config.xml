@@ -127,6 +127,21 @@
                 </logitrail>
             </modules>
         </translate>
+        <acl>
+            <resources>
+                <all>
+                    <title>Allow Updateing Logitrail</title>
+                </all>
+                <admin>
+                    <children>
+                        <logitrailbackend translate="title" module="logitrail">
+                            <title>Update to logitrail</title>
+                            <sort_order>1000</sort_order>
+                        </logitrailbackend>
+                    </children>
+                </admin>
+            </resources>
+        </acl>
     </adminhtml>
 	<default>
         <carriers>

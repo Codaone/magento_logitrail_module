@@ -4,7 +4,7 @@
         <reference name="head">
            <block type="core/text" name="external_js">
                 <action method="setText">
-                    <text><![CDATA[<script type="text/javascript" src="https://rawgit.com/logitrail/javascript-library/master/src/logitrail.js"></script>]]></text>
+                    <text><![CDATA[<script type="text/javascript" src="https://connect.logitrail.com/logitrail.js"></script>]]></text>
                      </action>
             </block>
         </reference>

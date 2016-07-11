@@ -25,12 +25,19 @@
             $api = Mage::getModel('logitrail/logitrail')->getApi();
             $api->setOrderId($quote->getId());
             foreach($items as $item) {
-                $api->addProduct($item->getProductId(),
-                                $item->getName(), 
-                                $item->getQty(), 
-                                $item->getWeight(),
-                                $item->getPrice(),
-                                $item->getTaxPercent());
+                $product = Mage::getModel('catalog/product')->load($item->getId());
+                $api->addProduct(
+                    $product->getId(),
+                    $item->getName(),
+                    $item->getQty(),
+                    $product->getWeight() * 1000, // in grams
+                    $item->getPrice(),
+                    $item->getTaxPercent(),
+                    $product->getBarcode(),
+                    $product->getWidth(), // width
+                    $product->getHeight(), // height
+                    $product->getLength() // length
+                );
             }
             $address = $quote->getShippingAddress();
             $email = $address->getEmail() ? : $quote->getCustomerEmail();

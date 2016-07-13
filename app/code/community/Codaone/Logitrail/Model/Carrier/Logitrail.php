@@ -25,13 +25,13 @@
             $api = Mage::getModel('logitrail/logitrail')->getApi();
             $api->setOrderId($quote->getId());
             foreach($items as $item) {
-                $product = Mage::getModel('catalog/product')->load($item->getId());
+                $product = Mage::getModel('catalog/product')->load($item->getProductId());
                 $api->addProduct(
                     $product->getId(),
                     $item->getName(),
                     $item->getQty(),
                     $product->getWeight() * 1000, // in grams
-                    $item->getPrice(),
+                    $item->getPrice() - $item->getDiscountAmount(),
                     $item->getTaxPercent(),
                     $product->getBarcode(),
                     $product->getWidth(), // width

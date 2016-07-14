@@ -9,6 +9,8 @@ class Codaone_Logitrail_Model_Logitrail extends Mage_Core_Model_Abstract {
         $libDir = Mage::getBaseDir('lib');
         if(is_file($libDir . '/logitrail/lib/Logitrail/Lib/ApiClient.php')) {
             require_once $libDir . '/logitrail/lib/Logitrail/Lib/ApiClient.php';
+        } elseif(is_file($libDir . '/Logitrail/Lib/ApiClient.php')) {
+            require_once $libDir . '/Logitrail/Lib/ApiClient.php';
         } else {
             Mage::throwException('Logitrail library files missing');
             return;

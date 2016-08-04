@@ -20,18 +20,20 @@
         */
         public function getForm() {
             $quote = Mage::getSingleton('checkout/session')->getQuote();
+            /** @var Mage_Sales_Model_Quote_Item[] $items */
             $items = $quote->getAllVisibleItems();
             /** @var \Logitrail\Lib\ApiClient $api */
             $api = Mage::getModel('logitrail/logitrail')->getApi();
             $api->setOrderId($quote->getId());
             foreach($items as $item) {
+                /** @var Mage_Catalog_Model_Product $product */
                 $product = Mage::getModel('catalog/product')->load($item->getProductId());
                 $api->addProduct(
                     $product->getId(),
                     $item->getName(),
                     $item->getQty(),
                     $product->getWeight() * 1000, // in grams
-                    $item->getPrice() - $item->getDiscountAmount(),
+                    $item->getBasePriceInclTax() - $item->getDiscountAmount(),
                     $item->getTaxPercent(),
                     $product->getBarcode(),
                     $product->getWidth(), // width

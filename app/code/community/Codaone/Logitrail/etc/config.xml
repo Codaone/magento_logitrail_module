@@ -2,7 +2,7 @@
 <config>
 	<modules>
 		<Codaone_Logitrail>
-			<version>0.2.0.0</version>
+			<version>1.0.0</version>
 		</Codaone_Logitrail>
 	</modules>
 	<global>

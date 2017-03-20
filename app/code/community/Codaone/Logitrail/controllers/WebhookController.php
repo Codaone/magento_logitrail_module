@@ -37,7 +37,7 @@ class Codaone_Logitrail_WebhookController extends Mage_Core_Controller_Front_Act
 						foreach ($received_data['payload'] as $product) {
 							/** @var Mage_CatalogInventory_Model_Stock_Item $stockItem */
 							$stockItem = Mage::getModel('cataloginventory/stock_item')->loadByProduct($product['merchants_id']);
-							if ($stockItem->getId() > 0 and $stockItem->getManageStock()) {
+							if ($stockItem->getId() > 0 && $stockItem->getManageStock()) {
 								$qty = $product['inventory']['available'];
 								$stockItem->setQty($qty);
 								$stockItem->setIsInStock((int)($qty > 0));

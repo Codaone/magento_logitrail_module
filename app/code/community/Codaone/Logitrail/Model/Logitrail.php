@@ -4,7 +4,7 @@ class Codaone_Logitrail_Model_Logitrail extends Mage_Core_Model_Abstract {
 
 	protected $_api = FALSE;
 
-	public function __construct() {
+	public function _construct() {
 		$libDir = Mage::getBaseDir('lib');
 		if (is_file($libDir . '/logitrail/lib/Logitrail/Lib/ApiClient.php')) {
 			require_once $libDir . '/logitrail/lib/Logitrail/Lib/ApiClient.php';
@@ -42,8 +42,7 @@ class Codaone_Logitrail_Model_Logitrail extends Mage_Core_Model_Abstract {
 
 			$address = $order->getShippingAddress();
 			$email   = $address->getEmail() ?: $order->getCustomerEmail();
-			// Update customerinfo to make sure they are correct
-			// firstname, lastname, phone, email, address, postalCode, city
+
 			$api->setCustomerInfo(
 				$address->getFirstname(),
 				$address->getLastname(),
@@ -61,7 +60,7 @@ class Codaone_Logitrail_Model_Logitrail extends Mage_Core_Model_Abstract {
 			$response    = json_decode($rawResponse, TRUE);
 			if ($response) {
 
-				if ($this->_getConfig('autoship') and $order->canShip()) {
+				if ($this->_getConfig('autoship') && $order->canShip()) {
 					$qty = array();
 					foreach ($order->getAllItems() as $item) {
 						$Itemqty             = $item->getQtyOrdered();
@@ -173,7 +172,7 @@ class Codaone_Logitrail_Model_Logitrail extends Mage_Core_Model_Abstract {
 					->__('Failed creating/updating product IDs: ') . join(', ', $failed);
 			Mage::log("Error: could not create/update product Logitrail. Response: " . join(",", $results), Zend_Log::ERR);
 			if (Mage::getModel('logitrail/carrier_logitrail')->isTestMode()) {
-				Mage::log("Error: could not create product to Logitrail. Logitrail Order Id:  $logitrailId Response:  " . print_r($results, TRUE), NULL, 'logitrail.log');
+				Mage::log("Error: could not create product to Logitrail. Response:  " . print_r($results, TRUE), NULL, 'logitrail.log');
 			}
 			return $errorMessage;
 		}

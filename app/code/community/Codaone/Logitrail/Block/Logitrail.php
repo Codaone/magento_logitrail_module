@@ -1,8 +1,7 @@
 <?php
 
 class Codaone_Logitrail_Block_Logitrail extends Mage_Checkout_Block_Onepage {
-	public function __construct() {
-		parent::__construct();
+	public function _construct() {
 		$this->setTemplate('logitrail/container.phtml');
 	}
 

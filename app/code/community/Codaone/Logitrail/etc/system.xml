@@ -135,6 +135,7 @@
 							<label>Webhook Password</label>
 							<comment>Webhook password to be passed to Logitrail</comment>
 							<frontend_type>text</frontend_type>
+							<frontend_model>logitrail/adminhtml_disable</frontend_model>
 							<sort_order>315</sort_order>
 							<show_in_default>1</show_in_default>
 							<show_in_website>1</show_in_website>

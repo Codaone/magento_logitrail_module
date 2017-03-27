@@ -51,7 +51,8 @@ class Codaone_Logitrail_Model_Logitrail extends Mage_Core_Model_Abstract {
 				join(' ', $address->getStreet()),
 				$address->getPostcode(),
 				$address->getCity(),
-				$address->getCompany()
+				$address->getCompany(),
+				$address->getCountry()
 			);
 			$api->setOrderId($order->getIncrementId());
 			$api->updateOrder($logitrailId);

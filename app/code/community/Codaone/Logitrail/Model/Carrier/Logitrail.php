@@ -57,7 +57,8 @@ class Codaone_Logitrail_Model_Carrier_Logitrail
 			join(' ', $address->getStreet()),
 			$address->getPostcode(),
 			$address->getCity(),
-			$address->getCompany()
+			$address->getCompany(),
+			$address->getCountry()
 		);
 		$locale = explode('_', Mage::app()->getLocale()->getLocaleCode())[0];
 		$form = $api->getForm($locale);

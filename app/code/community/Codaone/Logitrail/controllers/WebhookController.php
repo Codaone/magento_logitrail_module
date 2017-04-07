@@ -11,7 +11,7 @@ class Codaone_Logitrail_WebhookController extends Mage_Core_Controller_Front_Act
 	function updateAction(){
 		/** @var \Logitrail\Lib\ApiClient $api */
 		$apic = Mage::getModel('logitrail/logitrail')->getApi();
-		$hash = explode(' ', apache_request_headers()['Authorization'])[1];
+		$hash = explode(' ', $this->getAllHeaders()['Authorization'])[1];
 		$auth = explode(':', base64_decode($hash));
 		$currentUsername = Mage::getStoreConfig('carriers/logitrail/webhook_username');
 		$currentPassword = Mage::getStoreConfig('carriers/logitrail/webhook_password');
@@ -34,15 +34,14 @@ class Codaone_Logitrail_WebhookController extends Mage_Core_Controller_Front_Act
 				));
 				switch ($received_data['event_type']) {
 					case "product.inventory.change":
-						foreach ($received_data['payload'] as $product) {
-							/** @var Mage_CatalogInventory_Model_Stock_Item $stockItem */
-							$stockItem = Mage::getModel('cataloginventory/stock_item')->loadByProduct($product['merchants_id']);
-							if ($stockItem->getId() > 0 && $stockItem->getManageStock()) {
-								$qty = $product['inventory']['available'];
-								$stockItem->setQty($qty);
-								$stockItem->setIsInStock((int)($qty > 0));
-								$stockItem->save();
-							}
+						$payload = $received_data['payload'];
+						/** @var Mage_CatalogInventory_Model_Stock_Item $stockItem */
+						$stockItem = Mage::getModel('cataloginventory/stock_item')->loadByProduct($payload['product']['merchants_id']);
+						if ($stockItem->getId() > 0 && $stockItem->getManageStock()) {
+							$qty = $payload['inventory']['available'];
+							$stockItem->setQty($qty);
+							$stockItem->setIsInStock((int)($qty > 0));
+							$stockItem->save();
 						}
 						break;
 					case "order.shipped":
@@ -82,6 +81,42 @@ class Codaone_Logitrail_WebhookController extends Mage_Core_Controller_Front_Act
 				}
 			}
 		}
+	}
+
+	/**
+	 * Get all HTTP header key/values as an associative array for the current request.
+	 *
+	 * @return string[string] The HTTP header key/value pairs.
+	 */
+	private function getAllHeaders() {
+		$headers = array();
+		$copy_server = array(
+			'CONTENT_TYPE'   => 'Content-Type',
+			'CONTENT_LENGTH' => 'Content-Length',
+			'CONTENT_MD5'    => 'Content-Md5',
+		);
+		foreach ($_SERVER as $key => $value) {
+			if (substr($key, 0, 5) === 'HTTP_') {
+				$key = substr($key, 5);
+				if (!isset($copy_server[$key]) || !isset($_SERVER[$key])) {
+					$key = str_replace(' ', '-', ucwords(strtolower(str_replace('_', ' ', $key))));
+					$headers[$key] = $value;
+				}
+			} elseif (isset($copy_server[$key])) {
+				$headers[$copy_server[$key]] = $value;
+			}
+		}
+		if (!isset($headers['Authorization'])) {
+			if (isset($_SERVER['REDIRECT_HTTP_AUTHORIZATION'])) {
+				$headers['Authorization'] = $_SERVER['REDIRECT_HTTP_AUTHORIZATION'];
+			} elseif (isset($_SERVER['PHP_AUTH_USER'])) {
+				$basic_pass = isset($_SERVER['PHP_AUTH_PW']) ? $_SERVER['PHP_AUTH_PW'] : '';
+				$headers['Authorization'] = 'Basic ' . base64_encode($_SERVER['PHP_AUTH_USER'] . ':' . $basic_pass);
+			} elseif (isset($_SERVER['PHP_AUTH_DIGEST'])) {
+				$headers['Authorization'] = $_SERVER['PHP_AUTH_DIGEST'];
+			}
+		}
+		return $headers;
 	}
 
 }

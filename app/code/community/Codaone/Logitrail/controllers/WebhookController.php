@@ -45,7 +45,8 @@ class Codaone_Logitrail_WebhookController extends Mage_Core_Controller_Front_Act
 						}
 						break;
 					case "order.shipped":
-						$orderId = $received_data['merchants_id'];
+						$payload = $received_data['payload'];
+						$orderId = $payload['merchants_order']['id'];
 						/** @var Mage_Sales_Model_Order $order */
 						$order = Mage::getModel('sales/order')->loadByIncrementId($orderId);
 						if ($order->canShip()) {
@@ -54,8 +55,8 @@ class Codaone_Logitrail_WebhookController extends Mage_Core_Controller_Front_Act
 								/** @var Mage_Sales_Model_Order_Item $item */
 								$qty[$item->getId()] = $item->getQtyOrdered();
 							}
-							$trackingCode = $received_data['order']['tracking_code'];
-							$trackingUrl = $received_data['order']['tracking_url'];
+							$trackingCode = $payload['order']['tracking_code'];
+							$trackingUrl = $payload['order']['tracking_url'];
 
 							$shipment = $order->prepareShipment($qty);
 							$shipment->register();
@@ -74,7 +75,7 @@ class Codaone_Logitrail_WebhookController extends Mage_Core_Controller_Front_Act
 
 							$shipment->sendEmail(TRUE, Mage::helper('logitrail')
 								->__("Tracking URL: " . str_replace('\\', '', $trackingUrl)));
-							$shipment->setEmailSent(TRUE);
+							$shipment->setEmailSent(FALSE);
 							$order->save();
 						}
 						break;

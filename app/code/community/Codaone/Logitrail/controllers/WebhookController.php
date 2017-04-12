@@ -40,7 +40,9 @@ class Codaone_Logitrail_WebhookController extends Mage_Core_Controller_Front_Act
 						if ($stockItem->getId() > 0 && $stockItem->getManageStock()) {
 							$qty = $payload['inventory']['available'];
 							$stockItem->setQty($qty);
-							$stockItem->setIsInStock((int)($qty > 0));
+							if(!$stockItem->getBackorders()){
+								$stockItem->setIsInStock((int)($qty > 0));
+							}
 							$stockItem->save();
 						}
 						break;
@@ -74,7 +76,7 @@ class Codaone_Logitrail_WebhookController extends Mage_Core_Controller_Front_Act
 								->save();
 
 							$shipment->sendEmail(TRUE, Mage::helper('logitrail')
-								->__("Tracking URL: " . str_replace('\\', '', $trackingUrl)));
+								->__("Tracking URL: ") . str_replace('\\', '', $trackingUrl));
 							$shipment->setEmailSent(TRUE);
 							$order->save();
 						}

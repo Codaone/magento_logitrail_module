@@ -62,7 +62,7 @@ class Codaone_Logitrail_Model_Carrier_Logitrail
 			$address->getCountry()
 		);
 		$locale = explode('_', Mage::app()->getLocale()->getLocaleCode())[0];
-		$form = $api->getForm($locale, array('total_sum' => $quote->getBaseGrandTotal()));
+		$form = $api->getForm($locale, array('total_sum' => $quote->getBaseGrandTotal() - $quote->getShippingAddress()->getBaseShippingAmount()));
 		if ($this->isTestMode()) {
 			Mage::log("Order form for Logitrail: $form", NULL, 'logitrail.log');
 		}
